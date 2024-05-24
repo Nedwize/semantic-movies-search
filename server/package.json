@@ -16,6 +16,8 @@
     "author": "Nedwize",
     "license": "ISC",
     "dependencies": {
+        "chromadb": "^1.8.1",
+        "chromadb-default-embed": "^2.13.2",
         "cors": "^2.8.5",
         "dotenv": "^16.4.5",
         "express": "^4.19.2",
