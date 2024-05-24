@@ -32,7 +32,25 @@ function App() {
 
     return (
         <div className="mx-auto w-[800px] h-screen p-4">
-            <div class="flex items-center"></div>
+            <div className="flex gap-2 justify-center">
+                <div className="space-x-3">
+                    <label
+                        htmlFor="select1"
+                        className="relative inline-flex cursor-pointer items-center"
+                    >
+                        <input
+                            type="checkbox"
+                            id="select1"
+                            className="peer sr-only"
+                            onChange={(e) =>
+                                setIsCoolSearchOn(e.target.checked)
+                            }
+                        />
+                        <div className="h-6 w-11 rounded-full bg-gray-400 after:absolute after:top-0.5 after:left-0.5 after:h-5 after:w-5 after:rounded-full after:bg-white after:shadow after:transition-all after:content-[''] hover:bg-gray-200 peer-checked:bg-primary-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:ring-4 peer-focus:ring-primary-200 peer-disabled:cursor-not-allowed peer-disabled:bg-gray-100 peer-disabled:after:bg-gray-50"></div>
+                    </label>
+                </div>
+                <p className="text-base font-semibold">Cool Search</p>
+            </div>
             <div className="flex gap-4 mt-10 mb-4">
                 <input
                     type="text"
