@@ -8,6 +8,7 @@ import mongoose from 'mongoose'
 import { isProd, NODE_ENV, PORT, MONGO_URI } from './config.js'
 
 import { errorHandler, unknownEndpoint, limiter } from './utils/middleware.js'
+import movieRouter from './routes/movie.routes.js'
 
 const startServer = () => {
     const app = express()
@@ -39,6 +40,8 @@ const startServer = () => {
     app.get('/health', (_, res) => {
         res.status(200).json({ message: 'ok' })
     })
+
+    app.use('/movies', movieRouter)
 
     app.use(errorHandler)
     app.use(unknownEndpoint)
