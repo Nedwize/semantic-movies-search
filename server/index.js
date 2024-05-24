@@ -15,6 +15,7 @@ const startServer = () => {
 
     console.log('NODE_ENV', NODE_ENV)
 
+    app.enable('trust proxy')
     app.use(limiter(15, 200))
     app.use(express.json())
     app.use(express.urlencoded({ extended: false }))
@@ -41,7 +42,7 @@ const startServer = () => {
         res.status(200).json({ message: 'ok' })
     })
 
-    app.use('/movies', movieRouter)
+    app.use('/api/movies', movieRouter)
 
     app.use(errorHandler)
     app.use(unknownEndpoint)
