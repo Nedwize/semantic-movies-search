@@ -30,8 +30,9 @@ function App() {
     }
 
     return (
-        <div className="mx-auto w-[800px] h-screen p-4">
+        <div className="mx-auto max-w-[800px] h-screen p-4">
             <div className="flex gap-2 justify-center">
+                <p className="text-base font-semibold">Boring Search</p>
                 <div className="space-x-3">
                     <label
                         htmlFor="select1"
@@ -54,7 +55,13 @@ function App() {
                 </div>
                 <p className="text-base font-semibold">Cool Search</p>
             </div>
-            <div className="flex gap-4 mt-10 mb-4">
+            <form
+                className="flex gap-4 mt-10 mb-4"
+                onSubmit={(e) => {
+                    e.preventDefault()
+                    handleSearch()
+                }}
+            >
                 <input
                     type="text"
                     placeholder="Search..."
@@ -68,8 +75,8 @@ function App() {
                 >
                     Search
                 </button>
-            </div>
-            <div className="mt-10 flex flex-wrap gap-4 justify-center">
+            </form>
+            <div className="mt-10 pb-10 flex flex-wrap gap-4 justify-center">
                 {movies.length
                     ? movies.map((movie) => (
                           <MovieCard movie={movie} key={movie.id} />
