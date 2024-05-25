@@ -10,15 +10,15 @@ function App() {
         if (!isCoolSearchOn) {
             const response = await fetch(`/api/movies/search?q=${searchTerm}`)
             const data = await response.json()
-            if (data?.movies?.length) {
+            if (data?.movies && Array.isArray(data.movies)) {
                 setMovies(data.movies)
             }
         } else {
             const response = await fetch(
-                `/api/movies/cool-search=${searchTerm}`
+                `/api/movies/cool-search?q=${searchTerm}`
             )
             const data = await response.json()
-            if (data?.movies?.length) {
+            if (data?.movies && Array.isArray(data.movies)) {
                 setMovies(data.movies)
             }
         }
@@ -26,7 +26,6 @@ function App() {
 
     const handleSearch = () => {
         if (!searchTerm) return
-        setIsCoolSearchOn(false) // TODO: remove this
         fetchMovies()
     }
 
@@ -67,9 +66,11 @@ function App() {
                 </button>
             </div>
             <div className="mt-10 flex flex-wrap gap-4 justify-center">
-                {movies.map((movie) => (
-                    <MovieCard movie={movie} key={movie.id} />
-                ))}
+                {movies.length
+                    ? movies.map((movie) => (
+                          <MovieCard movie={movie} key={movie.id} />
+                      ))
+                    : 'No movies found'}
             </div>
         </div>
     )

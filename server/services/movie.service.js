@@ -2,6 +2,10 @@ import Movie from '../models/movie.model.js'
 import Chroma from '../utils/chroma.js'
 
 class MovieService {
+    static async FindMoviesByIds(ids) {
+        return Movie.find({ _id: { $in: ids } }).select('id title plot poster')
+    }
+
     static async FindMovieByKeyword(searchString) {
         try {
             const searchRegex = new RegExp(searchString, 'i') // 'i' makes the search case-insensitive
@@ -29,7 +33,22 @@ class MovieService {
             results?.ids[0].length &&
             results?.distances?.length
         ) {
-            return results
+            const ids = results.ids[0]
+            const movies = await this.FindMoviesByIds(ids)
+            const distances = results.distances[0]
+            // To maintain the order of IDs, this is important, also send the score with it
+            const reorderedNotes = ids.map((id, idx) => {
+                const movie = movies.find((n) => n.id === id)
+                // Manual transforming of note as we're adding a separate property and doing JSON serialization later
+                return {
+                    title: movie?.title,
+                    poster: movie?.poster,
+                    id: movie?._id?.toString(),
+                    distance: distances[idx],
+                    similarity: 1 / (1 + distances[idx]), // Ref - https://stats.stackexchange.com/questions/53068/euclidean-distance-score-and-similarity
+                }
+            })
+            return reorderedNotes
         }
         return []
     }
