@@ -45,7 +45,11 @@ function App() {
                                 setIsCoolSearchOn(e.target.checked)
                             }
                         />
-                        <div className="h-6 w-11 rounded-full bg-gray-400 after:absolute after:top-0.5 after:left-0.5 after:h-5 after:w-5 after:rounded-full after:bg-white after:shadow after:transition-all after:content-[''] hover:bg-gray-200 peer-checked:bg-primary-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:ring-4 peer-focus:ring-primary-200 peer-disabled:cursor-not-allowed peer-disabled:bg-gray-100 peer-disabled:after:bg-gray-50"></div>
+                        <div
+                            className={`h-6 w-11 rounded-full ${
+                                isCoolSearchOn ? 'bg-blue-500' : 'bg-gray-400'
+                            } after:absolute after:top-0.5 after:left-0.5 after:h-5 after:w-5 after:rounded-full after:bg-white after:shadow after:transition-all after:content-[''] hover:bg-gray-200 peer-checked:bg-primary-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:ring-4 peer-focus:ring-primary-200 peer-disabled:cursor-not-allowed peer-disabled:bg-gray-100 peer-disabled:after:bg-gray-50`}
+                        ></div>
                     </label>
                 </div>
                 <p className="text-base font-semibold">Cool Search</p>
