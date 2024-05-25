@@ -1,22 +1,42 @@
 import React from 'react'
 
+const SUGGESTIONS = {
+    BORING: [
+        'The Godfather',
+        'Finding Nemo',
+        'Godzilla',
+        'Planet of the Apes',
+        'Chakde',
+        'Spider-man',
+        'Interstellar',
+    ],
+    COOL: [
+        "youngest son of an italian mafia takes over the family business on his father's demise",
+        'a clownfish searches for his lost son',
+        'lizard monster terrorises a city',
+        'monkeys become smart and take over the world',
+        "retired ex hockey player coaches indian women's hockey team",
+        'man gets bitten by a spider and gets powers',
+        'group of astronauts look for other habitable planets',
+    ],
+}
+
 function App() {
     const [searchTerm, setSearchTerm] = React.useState('')
     const [movies, setMovies] = React.useState([])
     const [isCoolSearchOn, setIsCoolSearchOn] = React.useState(false)
 
-    const fetchMovies = async () => {
-        if (!searchTerm) return
+    const fetchMovies = async (q) => {
+        const term = q || searchTerm
+        if (!term) return
         if (!isCoolSearchOn) {
-            const response = await fetch(`/api/movies/search?q=${searchTerm}`)
+            const response = await fetch(`/api/movies/search?q=${term}`)
             const data = await response.json()
             if (data?.movies && Array.isArray(data.movies)) {
                 setMovies(data.movies)
             }
         } else {
-            const response = await fetch(
-                `/api/movies/cool-search?q=${searchTerm}`
-            )
+            const response = await fetch(`/api/movies/cool-search?q=${term}`)
             const data = await response.json()
             if (data?.movies && Array.isArray(data.movies)) {
                 setMovies(data.movies)
@@ -28,6 +48,10 @@ function App() {
         if (!searchTerm) return
         fetchMovies()
     }
+
+    const currentSuggestions = isCoolSearchOn
+        ? SUGGESTIONS.COOL
+        : SUGGESTIONS.BORING
 
     return (
         <div className="mx-auto max-w-[800px] h-screen p-4">
@@ -55,8 +79,22 @@ function App() {
                 </div>
                 <p className="text-base font-semibold">Cool Search</p>
             </div>
+            <div className="w-full justify-center flex gap-2 mt-4 flex-wrap">
+                {currentSuggestions.map((suggestion) => (
+                    <button
+                        key={suggestion}
+                        className="px-2 py-1 border border-gray-200 rounded-3xl cursor-pointer hover:bg-gray-100"
+                        onClick={() => {
+                            setSearchTerm(suggestion)
+                            fetchMovies(suggestion)
+                        }}
+                    >
+                        <p className="text-xs">{suggestion}</p>
+                    </button>
+                ))}
+            </div>
             <form
-                className="flex gap-4 mt-10 mb-4"
+                className="flex gap-4 mt-4 mb-4"
                 onSubmit={(e) => {
                     e.preventDefault()
                     handleSearch()
