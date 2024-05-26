@@ -12,6 +12,8 @@ COPY ./client ./client
 
 RUN npm run build
 
+ENV NODE_ENV=production
+
 EXPOSE 3030
 
 CMD ["npm", "start"]

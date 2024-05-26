@@ -28,12 +28,25 @@ const startServer = async () => {
     // Configure CORS
     app.use(
         cors({
-            origin: isProd ? PUBLIC_DOMAIN : 'http://localhost:5173', // TODO: Replace with React app's origin
+            origin: 'http://localhost:3030', // TODO: Replace with React app's origin
             credentials: true,
         })
     )
     app.use(morgan(!isProd ? 'tiny' : 'dev'))
-    app.use(helmet())
+    app.use(
+        helmet({
+            contentSecurityPolicy: {
+                directives: {
+                    imgSrc: [
+                        "'self'",
+                        'data:',
+                        'https://via.placeholder.com',
+                        'https://m.media-amazon.com',
+                    ],
+                },
+            },
+        })
+    )
 
     try {
         await Chroma.init()
@@ -54,6 +67,8 @@ const startServer = async () => {
         res.status(200).json({ message: 'ok' })
     })
 
+    app.use('/api/movies', movieRouter)
+
     if (isProd) {
         console.log('📂 Serving static files')
         // Serve frontend files
@@ -64,8 +79,6 @@ const startServer = async () => {
             res.sendFile(path.join(__dirname, './client/build/index.html')) // This is according to the docker file and not the current structure
         })
     }
-
-    app.use('/api/movies', movieRouter)
 
     app.use(errorHandler)
     app.use(unknownEndpoint)
