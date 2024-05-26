@@ -1,19 +1,25 @@
 import { ChromaClient } from 'chromadb'
-const client = new ChromaClient()
-
-const collection = await client.getOrCreateCollection({
-    name: 'movies',
-})
 
 // Docs of APIs on PORT 8000 - http://localhost:8000/docs
 class Chroma {
+    static client = null
+    static collection = null
+
+    static async init() {
+        this.client = new ChromaClient({
+            path: 'http://chromadb-server:8000',
+        })
+        this.collection = await this.client.getOrCreateCollection({
+            name: 'movies',
+        })
+    }
     static async getCollection() {
-        return collection
+        return this.collection
     }
 
     static async query({ q, n }) {
         try {
-            const results = await collection.query({
+            const results = await this.collection.query({
                 queryTexts: [q], // the search query
                 nResults: n, // how many results to return
             })
@@ -26,7 +32,7 @@ class Chroma {
 
     static async singleAdd(entity) {
         try {
-            await collection.add({
+            await this.collection.add({
                 documents: [entity.text],
                 ids: [entity.id],
             })
@@ -40,7 +46,7 @@ class Chroma {
 
     static async singleUpsert(entity) {
         try {
-            await collection.upsert({
+            await this.collection.upsert({
                 documents: [entity.text],
                 ids: [entity.id],
             })
@@ -62,7 +68,7 @@ class Chroma {
                 ids.push(doc.id)
             }
             console.log(documents, ids)
-            await collection.add({
+            await this.collection.add({
                 documents,
                 ids,
             })
@@ -82,7 +88,7 @@ class Chroma {
                 ids.push(doc.id)
             }
             console.log('Pushed - ', entities.length)
-            await collection.upsert({
+            await this.collection.upsert({
                 documents,
                 ids,
             })

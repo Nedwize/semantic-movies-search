@@ -1,0 +1,36 @@
+version: '3.9'
+
+networks:
+    net:
+        driver: bridge
+services:
+    chromadb-server:
+        image: ghcr.io/chroma-core/chroma:latest
+        environment:
+            - IS_PERSISTENT=TRUE
+        volumes:
+            # Default configuration for persist_directory in chromadb/config.py
+            # Currently it's located in "/chroma/chroma/"
+            - chroma-data:/chroma/chroma/
+        ports:
+            - 8000:8000
+        networks:
+            - net
+        healthcheck:
+            test: ['CMD', 'curl', '-f', 'http://localhost:8000/docs']
+            interval: 30s
+            timeout: 10s
+            retries: 5
+    web-server:
+        build: .
+        ports:
+            - 3030:3030
+        depends_on:
+            chromadb-server:
+                condition: service_healthy
+        networks:
+            - net
+
+volumes:
+    chroma-data:
+        driver: local

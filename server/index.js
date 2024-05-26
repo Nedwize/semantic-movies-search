@@ -11,11 +11,12 @@ import { isProd, NODE_ENV, PORT, MONGO_URI } from './config.js'
 
 import { errorHandler, unknownEndpoint, limiter } from './utils/middleware.js'
 import movieRouter from './routes/movie.routes.js'
+import Chroma from './utils/chroma.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
-const startServer = () => {
+const startServer = async () => {
     const app = express()
 
     console.log('NODE_ENV', NODE_ENV)
@@ -34,6 +35,12 @@ const startServer = () => {
     app.use(morgan(!isProd ? 'tiny' : 'dev'))
     app.use(helmet())
 
+    try {
+        await Chroma.init()
+    } catch (e) {
+        console.log(`Could not connect to ChromaDB. Err: ${e?.message}`)
+    }
+
     mongoose
         .connect(MONGO_URI)
         .then(() => console.log('🛢 Connected to MongoDB'))
@@ -50,11 +57,11 @@ const startServer = () => {
     if (isProd) {
         console.log('📂 Serving static files')
         // Serve frontend files
-        app.use(express.static(path.join(__dirname, '../client/dist')))
+        app.use(express.static(path.join(__dirname, './client/build'))) // This is according to the docker file and not the current structure
 
         // Catch all other routes and serve frontend
         app.get('*', (_, res) => {
-            res.sendFile(path.join(__dirname, '../client/dist/index.html'))
+            res.sendFile(path.join(__dirname, './client/build/index.html')) // This is according to the docker file and not the current structure
         })
     }
 
