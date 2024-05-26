@@ -27,6 +27,7 @@ function App() {
     const [isCoolSearchOn, setIsCoolSearchOn] = React.useState(false)
 
     const fetchMovies = async (q) => {
+        // TODO: add a try catch
         const term = q || searchTerm
         if (!term) return
         if (!isCoolSearchOn) {

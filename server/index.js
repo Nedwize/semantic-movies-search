@@ -4,11 +4,16 @@ import morgan from 'morgan'
 import cors from 'cors'
 import helmet from 'helmet'
 import mongoose from 'mongoose'
+import { fileURLToPath } from 'url'
+import path, { dirname } from 'path'
 
 import { isProd, NODE_ENV, PORT, MONGO_URI } from './config.js'
 
 import { errorHandler, unknownEndpoint, limiter } from './utils/middleware.js'
 import movieRouter from './routes/movie.routes.js'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 const startServer = () => {
     const app = express()
@@ -41,6 +46,17 @@ const startServer = () => {
     app.get('/health', (_, res) => {
         res.status(200).json({ message: 'ok' })
     })
+
+    if (isProd) {
+        console.log('📂 Serving static files')
+        // Serve frontend files
+        app.use(express.static(path.join(__dirname, '../client/dist')))
+
+        // Catch all other routes and serve frontend
+        app.get('*', (_, res) => {
+            res.sendFile(path.join(__dirname, '../client/dist/index.html'))
+        })
+    }
 
     app.use('/api/movies', movieRouter)
 
