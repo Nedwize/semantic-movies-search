@@ -9,6 +9,7 @@ export const MONGO_URI =
 export const CHROMA_ENV = {
     URI: process.env.CHROMA_DB_URI || 'http://chromadb-server:8000',
     CREDENTIALS: process.env.CHROMA_DB_CREDENTIALS,
+    AUTH_PROVIDER: process.env.CHROMA_DB_AUTH_PROVIDER,
 }
 
 export const NODE_ENV = process.env.NODE_ENV || 'staging'

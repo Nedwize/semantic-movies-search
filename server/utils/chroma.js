@@ -9,7 +9,10 @@ class Chroma {
     static async init() {
         this.client = new ChromaClient({
             path: CHROMA_ENV.URI,
-            auth: { provider: 'token', credentials: CHROMA_ENV.CREDENTIALS },
+            auth: {
+                provider: CHROMA_ENV.AUTH_PROVIDER,
+                credentials: CHROMA_ENV.CREDENTIALS,
+            },
         })
         this.collection = await this.client.getOrCreateCollection({
             name: 'movies',
