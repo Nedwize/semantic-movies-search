@@ -7,13 +7,15 @@ class Chroma {
     static collection = null
 
     static async init() {
-        this.client = new ChromaClient({
+        const config = {
             path: CHROMA_ENV.URI,
             auth: {
                 provider: CHROMA_ENV.AUTH_PROVIDER,
                 credentials: CHROMA_ENV.CREDENTIALS,
             },
-        })
+        }
+        console.log('Attempting to connect to Chroma with config - ', config)
+        this.client = new ChromaClient(config)
         this.collection = await this.client.getOrCreateCollection({
             name: 'movies',
         })
