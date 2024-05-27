@@ -100,7 +100,7 @@ class Chroma {
                 ids,
             })
         } catch (e) {
-            console.log(`ChromaDB ERR: Could not perform bulkAdd.`)
+            console.log(`ChromaDB ERR: Could not perform bulkUpsert.`)
             console.log(e)
         }
     }

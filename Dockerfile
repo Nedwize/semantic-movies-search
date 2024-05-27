@@ -10,6 +10,8 @@ COPY ./server .
 
 COPY ./client ./client
 
+RUN npm install chromadb-default-embed
+
 RUN npm run build
 
 ENV NODE_ENV=production
