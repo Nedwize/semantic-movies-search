@@ -6,21 +6,16 @@ class Chroma {
     static client = null
     static collection = null
 
-    static async init(config) {
-        const configuration = Object.keys(config || {}).length
-            ? config
-            : {
-                  path: CHROMA_ENV.URI,
-                  auth: {
-                      provider: CHROMA_ENV.AUTH_PROVIDER,
-                      credentials: CHROMA_ENV.CREDENTIALS,
-                  },
-              }
-        console.log(
-            'Attempting to connect to Chroma with config - ',
-            configuration
-        )
-        this.client = new ChromaClient(configuration)
+    static async init() {
+        const config = {
+            auth: {
+                provider: 'chromadb.auth.token.TokenAuthServerProvider',
+                credentials: 'test-token',
+            },
+            path: 'http://chroma.railway.internal:8000',
+        }
+        console.log(JSON.stringify(config, null, 2))
+        this.client = new ChromaClient(config)
         this.collection = await this.client.getOrCreateCollection({
             name: 'movies',
         })
