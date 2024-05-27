@@ -21,7 +21,7 @@ const startServer = async () => {
 
     console.log('NODE_ENV', NODE_ENV)
 
-    app.enable('trust proxy')
+    // app.enable('trust proxy')
     app.use(limiter(15, 200))
     app.use(express.json())
     app.use(express.urlencoded({ extended: false }))
@@ -65,6 +65,18 @@ const startServer = async () => {
 
     app.get('/health', (_, res) => {
         res.status(200).json({ message: 'ok' })
+    })
+
+    app.post('/connect-chroma', async (req, res) => {
+        const config = req.body
+        try {
+            await Chroma.init(config)
+        } catch (e) {
+            console.log(
+                `Could not connect to ChromaDB through API. Err: ${e?.message}`
+            )
+        }
+        res.status(200).json({ success: true })
     })
 
     app.use('/api/movies', movieRouter)
