@@ -1,5 +1,5 @@
 import { ChromaClient } from 'chromadb'
-import { CHROMA_URI } from '../config.js'
+import { CHROMA_ENV } from '../config.js'
 
 // Docs of APIs on PORT 8000 - http://localhost:8000/docs
 class Chroma {
@@ -8,7 +8,8 @@ class Chroma {
 
     static async init() {
         this.client = new ChromaClient({
-            path: CHROMA_URI,
+            path: CHROMA_ENV.URI,
+            auth: { provider: 'token', credentials: CHROMA_ENV.CREDENTIALS },
         })
         this.collection = await this.client.getOrCreateCollection({
             name: 'movies',
