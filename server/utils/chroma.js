@@ -93,11 +93,15 @@ class Chroma {
                 documents.push(doc.text)
                 ids.push(doc.id)
             }
-            console.log('Pushing - ', entities.length)
-            console.log({
-                documents,
-                ids,
-            })
+            console.log(
+                'Pushing - Entities -',
+                entities.length,
+                'Documents -',
+                documents.length,
+                'IDs -',
+                ids.length
+            )
+
             await this.collection.upsert({
                 documents,
                 ids,

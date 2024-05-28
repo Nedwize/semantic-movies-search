@@ -1,5 +1,5 @@
 # Specify the platform to not get chromadb-default-embed import err
-FROM node:alpine 
+FROM node:18-buster 
 
 WORKDIR /usr/src/app
 
