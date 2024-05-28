@@ -30,6 +30,7 @@ services:
                 condition: service_healthy
         networks:
             - net
+        platform: linux/x86_64
 
 volumes:
     chroma-data:
