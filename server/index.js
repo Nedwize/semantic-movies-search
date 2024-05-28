@@ -49,7 +49,7 @@ const startServer = async () => {
     )
 
     try {
-        await Chroma.init()
+        await Chroma.initWRetry()
     } catch (e) {
         console.log(e)
         console.log(`Could not connect to ChromaDB. Err: ${e?.message}`)

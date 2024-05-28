@@ -19,6 +19,36 @@ class Chroma {
             name: 'movies',
         })
     }
+
+    static async initWRetry(retries = 5, delay = 10000) {
+        const config = {
+            auth: {
+                provider: 'chromadb.auth.token.TokenAuthServerProvider',
+                credentials: 'test-token',
+            },
+            path: 'http://chroma.railway.internal:8000',
+        }
+
+        for (let attempt = 1; attempt <= retries; attempt++) {
+            try {
+                this.client = new ChromaClient(config)
+                this.collection = await this.client.getOrCreateCollection({
+                    name: 'movies',
+                })
+                console.log('Connected to ChromaDB on attempt', attempt)
+                break // Exit the loop if the connection is successful
+            } catch (error) {
+                console.error(`Attempt ${attempt} failed:`, error)
+                if (attempt < retries) {
+                    console.log(`Retrying in ${delay / 1000} seconds...`)
+                    await new Promise((resolve) => setTimeout(resolve, delay))
+                } else {
+                    console.error('All retry attempts failed.')
+                }
+            }
+        }
+    }
+
     static async getCollection() {
         return this.collection
     }
