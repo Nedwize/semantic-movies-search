@@ -14,7 +14,6 @@ class Chroma {
             },
             path: 'http://chroma.railway.internal:8000',
         }
-        console.log(JSON.stringify(config, null, 2))
         this.client = new ChromaClient(config)
         this.collection = await this.client.getOrCreateCollection({
             name: 'movies',
@@ -94,7 +93,11 @@ class Chroma {
                 documents.push(doc.text)
                 ids.push(doc.id)
             }
-            console.log('Pushed - ', entities.length)
+            console.log('Pushing - ', entities.length)
+            console.log({
+                documents,
+                ids,
+            })
             await this.collection.upsert({
                 documents,
                 ids,

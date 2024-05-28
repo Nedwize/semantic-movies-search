@@ -1,5 +1,5 @@
 # Specify the platform to not get chromadb-default-embed import err
-FROM --platform=linux/x86_64 node:alpine 
+FROM node:bookworm 
 
 WORKDIR /usr/src/application
 
