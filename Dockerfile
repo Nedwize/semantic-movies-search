@@ -1,7 +1,7 @@
 # Specify the platform to not get chromadb-default-embed import err
-FROM node:bookworm 
+FROM node:alpine 
 
-WORKDIR /usr/src/application
+WORKDIR /usr/src/app
 
 COPY ./server/package*.json ./
 
