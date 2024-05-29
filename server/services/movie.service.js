@@ -54,7 +54,7 @@ class MovieService {
     }
 
     static async FeedToVectorStore() {
-        const BATCH_SIZE = 10
+        const BATCH_SIZE = 1
         let skip = 0
         let hasMore = true
 
