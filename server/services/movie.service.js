@@ -79,8 +79,14 @@ class MovieService {
                     const id = movie._id.toString()
                     return { text, id }
                 })
+                const s = performance.now()
                 await Chroma.bulkUpsert(data)
-                console.log('Done - ', skip + BATCH_SIZE)
+                const e = performance.now()
+                console.log(
+                    'Done inserting - ',
+                    skip + BATCH_SIZE,
+                    `Took - ${e - s}ms`
+                )
                 skip += BATCH_SIZE
             }
         } catch (error) {
