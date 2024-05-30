@@ -4,9 +4,10 @@ import './index.css'
 import App from './App'
 import posthog from 'posthog-js'
 import { PostHogProvider } from 'posthog-js/react'
-console.log(process.env.REACT_APP_PUBLIC_POSTHOG_KEY)
-posthog.init(process.env.REACT_APP_PUBLIC_POSTHOG_KEY, {
-    api_host: process.env.REACT_APP_PUBLIC_POSTHOG_HOST,
+import { CONFIG } from './utils/analyticsConstants.js'
+
+posthog.init(CONFIG.PH_KEY, {
+    api_host: CONFIG.PH_HOST,
 })
 
 const root = ReactDOM.createRoot(document.getElementById('root'))

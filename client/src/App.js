@@ -1,6 +1,6 @@
 import React from 'react'
 import SearchIcon from './components/icons/Search.js'
-import EVENTS from './utils/analyticsConstants.js'
+import { EVENTS } from './utils/analyticsConstants.js'
 import { usePostHog } from 'posthog-js/react'
 
 const SUGGESTIONS = {
