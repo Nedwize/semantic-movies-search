@@ -1,6 +1,7 @@
 import React from 'react'
 import SearchIcon from './components/icons/Search.js'
-import Analytics, { EVENTS } from './utils/analytics.js'
+import EVENTS from './utils/analyticsConstants.js'
+import { usePostHog } from 'posthog-js/react'
 
 const SUGGESTIONS = {
     BORING: [
@@ -37,20 +38,22 @@ function App() {
     const [movies, setMovies] = React.useState([])
     const [isCoolSearchOn, setIsCoolSearchOn] = React.useState(false)
 
+    const ph = usePostHog()
+
     const fetchMovies = async (q) => {
         try {
             const term = q || searchTerm
             if (!term) return
             setLoading(true)
             if (!isCoolSearchOn) {
-                Analytics.capture(EVENTS.COOL_SEARCH, { search: term })
+                ph?.capture(EVENTS.COOL_SEARCH, { search: term })
                 const response = await fetch(`/api/movies/search?q=${term}`)
                 const data = await response.json()
                 if (data?.movies && Array.isArray(data.movies)) {
                     setMovies(data.movies)
                 }
             } else {
-                Analytics.capture(EVENTS.SEARCH, { search: term })
+                ph?.capture(EVENTS.SEARCH, { search: term })
                 const response = await fetch(
                     `/api/movies/cool-search?q=${term}`
                 )
