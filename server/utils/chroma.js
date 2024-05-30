@@ -6,27 +6,13 @@ class Chroma {
     static client = null
     static collection = null
 
-    static async init() {
-        const config = {
-            auth: {
-                provider: 'chromadb.auth.token.TokenAuthServerProvider',
-                credentials: 'test-token',
-            },
-            path: 'http://chroma.railway.internal:8000',
-        }
-        this.client = new ChromaClient(config)
-        this.collection = await this.client.getOrCreateCollection({
-            name: 'movies',
-        })
-    }
-
     static async initWRetry(retries = 5, delay = 10000) {
         const config = {
             auth: {
-                provider: 'chromadb.auth.token.TokenAuthServerProvider',
-                credentials: 'test-token',
+                provider: CHROMA_ENV.AUTH_PROVIDER,
+                credentials: CHROMA_ENV.CREDENTIALS,
             },
-            path: 'http://chroma.railway.internal:8000',
+            path: CHROMA_ENV.URI,
         }
 
         for (let attempt = 1; attempt <= retries; attempt++) {
