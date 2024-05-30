@@ -44,7 +44,7 @@ const startServer = async () => {
                         'https://m.media-amazon.com',
                     ],
                     defaultSrc: ["'self'"],
-                    connectSrc: ["'self'", PH_CONFIG.PH_HOST],
+                    connectSrc: ["'self'", 'https://us.i.posthog.com'],
                 },
             },
         })
