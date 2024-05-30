@@ -12,7 +12,6 @@ import { isProd, NODE_ENV, PORT, MONGO_URI } from './config.js'
 import { errorHandler, unknownEndpoint, limiter } from './utils/middleware.js'
 import movieRouter from './routes/movie.routes.js'
 import Chroma from './utils/chroma.js'
-import { CONFIG } from '../client/src/utils/analyticsConstants.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
