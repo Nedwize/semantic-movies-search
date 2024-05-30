@@ -76,4 +76,3 @@ Happy Searching!
 # TODO
 
 -   [ ] Deploy on a subdomain
--   [ ] Add skeleton loaders

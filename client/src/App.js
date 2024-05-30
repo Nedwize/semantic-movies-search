@@ -32,6 +32,7 @@ const SUGGESTIONS = {
 // drummer
 
 function App() {
+    const [loading, setLoading] = React.useState(false)
     const [searchTerm, setSearchTerm] = React.useState('')
     const [movies, setMovies] = React.useState([])
     const [isCoolSearchOn, setIsCoolSearchOn] = React.useState(false)
@@ -40,7 +41,7 @@ function App() {
         try {
             const term = q || searchTerm
             if (!term) return
-
+            setLoading(true)
             if (!isCoolSearchOn) {
                 Analytics.capture(EVENTS.COOL_SEARCH, { search: term })
                 const response = await fetch(`/api/movies/search?q=${term}`)
@@ -60,6 +61,8 @@ function App() {
             }
         } catch (e) {
             //
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -137,7 +140,12 @@ function App() {
                 </button>
             </form>
             <div className="mt-10 pb-10 flex flex-wrap gap-4 justify-center text-center">
-                {movies.length ? (
+                {loading
+                    ? [1, 2, 3, 4].map((x) => (
+                          <MovieSkeletonCard key={`skel-${x}`} />
+                      ))
+                    : null}
+                {!loading && movies.length ? (
                     movies.map((movie) => (
                         <MovieCard movie={movie} key={movie.id} />
                     ))
@@ -147,7 +155,8 @@ function App() {
                         <br />
                         <span className="text-xs leading-3">
                             Please note that the movie database not complete and
-                            old. Post 2017 movies will not be available.
+                            quite old. Movies released post 2017 will not be
+                            available.
                         </span>
                     </div>
                 )}
@@ -174,6 +183,18 @@ const MovieCard = ({ movie }) => {
                 onError={() => setErrored(true)}
             />
             <h3 className="mt-2 font-semibold text-center">{movie.title}</h3>
+        </div>
+    )
+}
+
+const MovieSkeletonCard = () => {
+    return (
+        <div
+            className="w-[150px] border border-gray-300 p-2 pb-4 rounded-md shadow-md animate-pulse"
+            style={{ aspectRatio: '150 / 210' }}
+        >
+            <div className="w-full h-full bg-gray-200 rounded-md" />
+            <div className="w-3/4 h-2 bg-gray-300 rounded-md mt-2" />
         </div>
     )
 }
