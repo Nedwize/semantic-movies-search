@@ -1,5 +1,6 @@
 import React from 'react'
 import SearchIcon from './components/icons/Search.js'
+import Analytics, { EVENTS } from './utils/analytics.js'
 
 const SUGGESTIONS = {
     BORING: [
@@ -36,21 +37,29 @@ function App() {
     const [isCoolSearchOn, setIsCoolSearchOn] = React.useState(false)
 
     const fetchMovies = async (q) => {
-        // TODO: add a try catch
-        const term = q || searchTerm
-        if (!term) return
-        if (!isCoolSearchOn) {
-            const response = await fetch(`/api/movies/search?q=${term}`)
-            const data = await response.json()
-            if (data?.movies && Array.isArray(data.movies)) {
-                setMovies(data.movies)
+        try {
+            const term = q || searchTerm
+            if (!term) return
+
+            if (!isCoolSearchOn) {
+                Analytics.capture(EVENTS.COOL_SEARCH, { search: term })
+                const response = await fetch(`/api/movies/search?q=${term}`)
+                const data = await response.json()
+                if (data?.movies && Array.isArray(data.movies)) {
+                    setMovies(data.movies)
+                }
+            } else {
+                Analytics.capture(EVENTS.SEARCH, { search: term })
+                const response = await fetch(
+                    `/api/movies/cool-search?q=${term}`
+                )
+                const data = await response.json()
+                if (data?.movies && Array.isArray(data.movies)) {
+                    setMovies(data.movies)
+                }
             }
-        } else {
-            const response = await fetch(`/api/movies/cool-search?q=${term}`)
-            const data = await response.json()
-            if (data?.movies && Array.isArray(data.movies)) {
-                setMovies(data.movies)
-            }
+        } catch (e) {
+            //
         }
     }
 

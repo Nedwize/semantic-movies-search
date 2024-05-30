@@ -11,5 +11,4 @@
 # TODO
 
 1. Update Readme
-2. Add Google Analytics or PH or Umami
-3. Deploy on subdomain
+2. Deploy on subdomain
