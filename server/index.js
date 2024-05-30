@@ -7,7 +7,7 @@ import mongoose from 'mongoose'
 import { fileURLToPath } from 'url'
 import path, { dirname } from 'path'
 
-import { isProd, NODE_ENV, PORT, MONGO_URI } from './config.js'
+import { isProd, NODE_ENV, PORT, MONGO_URI, PH_CONFIG } from './config.js'
 
 import { errorHandler, unknownEndpoint, limiter } from './utils/middleware.js'
 import movieRouter from './routes/movie.routes.js'
@@ -44,7 +44,7 @@ const startServer = async () => {
                         'https://m.media-amazon.com',
                     ],
                     defaultSrc: ["'self'"],
-                    connectSrc: ["'self'", CONFIG.PH_HOST],
+                    connectSrc: ["'self'", PH_CONFIG.PH_HOST],
                 },
             },
         })
