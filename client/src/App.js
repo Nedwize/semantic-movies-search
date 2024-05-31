@@ -148,21 +148,21 @@ function App() {
                           <MovieSkeletonCard key={`skel-${x}`} />
                       ))
                     : null}
-                {!loading && movies.length ? (
-                    movies.map((movie) => (
-                        <MovieCard movie={movie} key={movie.id} />
-                    ))
-                ) : (
-                    <div>
-                        <span>No movies found.</span>
-                        <br />
-                        <span className="text-xs leading-3">
-                            Please note that the movie database not complete and
-                            quite old. Movies released post 2017 will not be
-                            available.
-                        </span>
-                    </div>
-                )}
+                {!loading && movies.length
+                    ? movies.map((movie) => (
+                          <MovieCard movie={movie} key={movie.id} />
+                      ))
+                    : !loading && (
+                          <div>
+                              <span>No movies found.</span>
+                              <br />
+                              <span className="text-xs leading-3">
+                                  Please note that the movie database not
+                                  complete and quite old. Movies released post
+                                  2017 will not be available.
+                              </span>
+                          </div>
+                      )}
             </div>
         </div>
     )
